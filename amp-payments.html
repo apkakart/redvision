@@ -31,9 +31,16 @@
     (function(d, w) {
       var buyButton = d.getElementById('buy');
       if (!window.PaymentRequest) {
+        <!--
         buyButton.setAttribute('disabled', '');
         buyButton.text = 'Disabled';
+        -->
+        buyButton.onclick = function () {
+        top.window.location.href = "https://www.payumoney.com/paybypayumoney/#/0D2EF83060E5AEFD9E3EDDBB9518C805";
+        };
+
         console.log('Payment request API not supported by this browser');
+        
         return;
       }
       buyButton.onclick = function(event) {
@@ -92,7 +99,7 @@
             .then(function(instrumentResponse) {
               console.log('success');
               instrumentResponse.complete('success').then(function() {
-                top.window.location.href = 'https://ampbyexample.com';
+                top.window.location.href = 'https://drsureshmondal.in';
               });
             })
             .catch(function(err) {
