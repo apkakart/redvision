@@ -60,6 +60,7 @@
         };
 
         var productId = getParameterByName('productId');
+        var orderId= getParametersByName('my_tel');
         var product = productIdToDetails[productId];
 
         console.log("Booking appointment" + product['name'] + ": " +
@@ -81,6 +82,7 @@
           },
           displayItems: [
             {
+              id: orderId,
               label: product['name'],
               amount: { currency: 'INR', value: cost.toFixed(2) }
               }
