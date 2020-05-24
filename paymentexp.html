@@ -1,0 +1,45 @@
+!doctype html>
+<html>
+
+<head>
+ <meta charset="utf-8">
+ <meta name="viewport" content="width=device-width,minimum-scale=1">
+ <style>
+   body {
+     margin: 0;
+   }
+
+   button {
+     background: #c9de96; /* Old browsers */
+         background: -moz-linear-gradient(top, #c9de96 0%, #8ab66b 44%, #398235 100%); /* FF3.6-15 */
+         background: -webkit-linear-gradient(top, #c9de96 0%,#8ab66b 44%,#398235 100%); /* Chrome10-25,Safari5.1-6 */
+         background: linear-gradient(to bottom, #c9de96 0%,#8ab66b 44%,#398235 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+         filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9de96', endColorstr='#398235',GradientType=0 );
+         border-radius:15px;
+         color:white;
+     width: 130px;
+     height: 42px;
+     font-size: 16px;
+     font-family: Montserrat, -apple-system, BlinkMacSystemFont, Segoe UI, Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue, Arial, sans-serif;
+   }
+ </style>
+</head>
+
+<body>
+<form method="POST" action="https://api.razorpay.com/v1/checkout/embedded">
+  <input type="hidden" name="key_id" value="YOUR_KEY_ID">
+  <input type="hidden" name="order_id" value="razorpay_order_id">
+  <input type="hidden" name="name" value="Acme Corp">
+  <input type="hidden" name="description" value="A Wild Sheep Chase">
+  <input type="hidden" name="image" value="https://cdn.razorpay.com/logos/BUVwvgaqVByGp2_large.png">
+  <input type="hidden" name="prefill[name]" value="Gaurav Kumar">
+  <input type="hidden" name="prefill[contact]" value="9123456780">
+  <input type="hidden" name="prefill[email]" value="gaurav.kumar@example.com">
+  <input type="hidden" name="notes[shipping address]" value="L-16, The Business Centre, 61 Wellfield Road, New Delhi - 110001">
+  <input type="hidden" name="callback_url" value="https://example.com/payment-callback">
+<input type="hidden" name="cancel_url" value="https://example.com/payment-cancel">
+  <button>Submit</button>
+</form>
+</body>
+
+</html>
