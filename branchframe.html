@@ -63,13 +63,36 @@ var b = getQueryVariable("csrf");
 <script type="text/javascript" src="https://dr-suresh-mondal-sexologist.s3.amazonaws.com/smart-selects/admin/js/bindfields.js"></script>
             
 
-<div id="div_id_state" class="form-group"> <label for="id_state" class=" requiredField">
-                State<span class="asteriskField">*</span> </label> <div class=""> <select name="state" class="select form-control" required id="id_state"> <option value="" selected>---------</option> <option value="35">andaman-and-nicobar-islands</option> <option value="34">andhra-pradesh</option> <option value="33">arunachal-pradesh</option> <option value="32">assam</option> <option value="31">bihar</option> <option value="30">chandigarh</option> <option value="29">chhattisgarh</option> <option value="28">dadra-and-nagar-haveli</option> <option value="27">daman-and-diu</option> <option value="26">delhi</option> <option value="25">goa</option> <option value="24">gujarat</option> <option value="23">haryana</option> <option value="22">himachal-pradesh</option> <option value="21">jammu-and-kashmir</option> <option value="20">jharkhand</option> <option value="19">karnataka</option> <option value="18">kerala</option> <option value="17">lakshadweep</option> <option value="16">madhya-pradesh</option> <option value="15">maharashtra</option> <option value="14">manipur</option> <option value="13">meghalaya</option> <option value="12">mizoram</option> <option value="11">nagaland</option> <option value="10">odisha</option> <option value="9">puducherry</option> <option value="8">punjab</option> <option value="7">rajasthan</option> <option value="6">sikkim</option> <option value="5">tamil-nadu</option> <option value="4">tripura</option> <option value="3">uttar-pradesh</option> <option value="2">uttarakhand</option> <option value="1">west-bengal</option>
+<div id="div_id_state" class="form-group"> 
+<label for="id_state" class=" requiredField">
+                State
+                <span class="asteriskField">*</span> 
+                </label> 
+                <div class=""> 
+                <select name="state" class="select form-control" required id="id_state"> 
+                <option value="" selected>---------</option> 
+                <option value="35">andaman-and-nicobar-islands</option> 
+                <option value="34">andhra-pradesh</option> <option value="33">arunachal-pradesh</option> <option value="32">assam</option> <option value="31">bihar</option> <option value="30">chandigarh</option> <option value="29">chhattisgarh</option> <option value="28">dadra-and-nagar-haveli</option> <option value="27">daman-and-diu</option> <option value="26">delhi</option> <option value="25">goa</option> <option value="24">gujarat</option> <option value="23">haryana</option> <option value="22">himachal-pradesh</option> <option value="21">jammu-and-kashmir</option> <option value="20">jharkhand</option> <option value="19">karnataka</option> <option value="18">kerala</option> <option value="17">lakshadweep</option> <option value="16">madhya-pradesh</option> <option value="15">maharashtra</option> <option value="14">manipur</option> <option value="13">meghalaya</option> <option value="12">mizoram</option> <option value="11">nagaland</option> <option value="10">odisha</option> <option value="9">puducherry</option> <option value="8">punjab</option> <option value="7">rajasthan</option> <option value="6">sikkim</option> <option value="5">tamil-nadu</option> <option value="4">tripura</option> <option value="3">uttar-pradesh</option> <option value="2">uttarakhand</option> <option value="1">west-bengal</option>
 
-</select> </div> </div> <div id="div_id_district" class="form-group"> <label for="id_district" class=" requiredField">
-                District<span class="asteriskField">*</span> </label> <div class=""> <select name="district" class="chainedselect form-control chained-fk" required id="id_district" data-chainfield="state" data-url="/chaining/filter/branch/District/state/branch/Branch/district" data-value="null" data-auto_choose="true" data-empty_label="--------" name="district">
-</select> </div> </div> <div id="div_id_city" class="form-group"> <label for="id_city" class=" requiredField">
-                City<span class="asteriskField">*</span> </label> <div class=""> <select name="city" class="chainedselect form-control chained-fk" required id="id_city" data-chainfield="district" data-url="/chaining/filter/branch/City/district/branch/Branch/city" data-value="null" data-auto_choose="true" data-empty_label="--------" name="city">
+</select>
+ </div> 
+ </div> 
+ <div id="div_id_district" class="form-group"> 
+ <label for="id_district" class=" requiredField">
+                District
+                <span class="asteriskField">*</span> 
+                </label> 
+                <div class=""> 
+                <select name="district" class="chainedselect form-control chained-fk" required id="id_district" data-chainfield="state" data-url="z" data-value="null" data-auto_choose="true" data-empty_label="--------" name="district">
+</select> 
+</div> 
+</div> 
+<div id="div_id_city" class="form-group"> 
+<label for="id_city" class=" requiredField">
+                City<span class="asteriskField">*</span> 
+                </label>
+                 <div class="">
+                  <select name="city" class="chainedselect form-control chained-fk" required id="id_city" data-chainfield="district" data-url="zz" data-value="null" data-auto_choose="true" data-empty_label="--------" name="city">
 </select> </div> </div>
 
             <br>
@@ -81,10 +104,10 @@ var b = getQueryVariable("csrf");
         <script>
         document.getElementById("formid").action="https://"+domain+"/branches";
         document.getElementById("csrfid").value=b;
+        document.getElementById("id_district").data-url="https://"+domain+"/chaining/filter/branch/District/state/branch/Branch/district";
+        document.getElementById("id_city").data-url="https://"+domain+"/chaining/filter/branch/City/district/branch/Branch/city";
         </script>
         
         </body>
         </html>
-        
-
         
