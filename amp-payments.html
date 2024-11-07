@@ -10,13 +10,6 @@
     }
 
     button {
-      background: #c9de96; /* Old browsers */
-          background: -moz-linear-gradient(top, #c9de96 0%, #8ab66b 44%, #398235 100%); /* FF3.6-15 */
-          background: -webkit-linear-gradient(top, #c9de96 0%,#8ab66b 44%,#398235 100%); /* Chrome10-25,Safari5.1-6 */
-          background: linear-gradient(to bottom, #c9de96 0%,#8ab66b 44%,#398235 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
-          filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#c9de96', endColorstr='#398235',GradientType=0 );
-          border-radius:15px;
-          color:white;
       width: 130px;
       height: 42px;
       font-size: 16px;
@@ -26,28 +19,21 @@
 </head>
 
 <body>
-  <button id="buy">Book Now</button>
+  <button id="buy">Buy Now</button>
   <script>
     (function(d, w) {
       var buyButton = d.getElementById('buy');
       if (!window.PaymentRequest) {
-        /*
         buyButton.setAttribute('disabled', '');
         buyButton.text = 'Disabled';
-        */
-        buyButton.onclick = function () {
-        top.window.location.href = "https://www.payumoney.com/paybypayumoney/#/0D2EF83060E5AEFD9E3EDDBB9518C805";
-        };
-
         console.log('Payment request API not supported by this browser');
-        
         return;
       }
       buyButton.onclick = function(event) {
         var productIdToDetails = {
           1: {
-            name: 'Appointment fee',
-            price: 400.00
+            name: 'Apple',
+            price: 6.99
           },
           2: {
             name: 'Orange',
@@ -60,10 +46,9 @@
         };
 
         var productId = getParameterByName('productId');
-        var orderId= getParametersByName('my_tel');
         var product = productIdToDetails[productId];
 
-        console.log("Booking appointment" + product['name'] + ": " +
+        console.log("Buying product " + product['name'] + ": " +
           productId);
 
         var supportedInstruments = [{
@@ -76,15 +61,14 @@
           total: {
             label: 'Total',
             amount: {
-              currency: 'INR',
+              currency: 'USD',
               value: cost.toFixed(2)
             }
           },
           displayItems: [
             {
-              id: orderId,
               label: product['name'],
-              amount: { currency: 'INR', value: cost.toFixed(2) }
+              amount: { currency: 'USD', value: cost.toFixed(2) }
               }
             ]
         };
@@ -101,7 +85,7 @@
             .then(function(instrumentResponse) {
               console.log('success');
               instrumentResponse.complete('success').then(function() {
-                top.window.location.href = 'https://drsureshmondal.in';
+                top.window.location.href = 'https://ampbyexample.com';
               });
             })
             .catch(function(err) {
