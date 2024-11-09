@@ -109,7 +109,7 @@ function createPaymentRequest() {
     requestPayerName: true
   };
 
-  return new PaymentRequest(methodData, details, options);
+  return new PaymentRequest(supportedInstruments, details, options);
 }
 
 /**
