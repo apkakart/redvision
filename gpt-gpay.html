@@ -1,0 +1,86 @@
+<div id="checkout">
+  <button id="buyButton">Book Now</button>
+</div>
+
+<script>
+  const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+  const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
+  if (window.PaymentRequest) {
+    const request = createPaymentRequest();
+
+    request.canMakePayment().then(result => {
+      if (result) {
+        document.getElementById('buyButton').addEventListener('click', onBuyClicked);
+      }
+    }).catch(err => showError('canMakePayment() error: ' + err.message));
+  } else {
+    showError('PaymentRequest API not available.');
+  }
+
+  function onBuyClicked() {
+    createPaymentRequest().show().then(response => {
+      response.complete('success');
+      handlePaymentResponse(response);
+    }).catch(err => showError('show() error: ' + err.message));
+  }
+
+  function getGooglePaymentsConfiguration() {
+    return {
+      environment: 'TEST',
+      apiVersion: 2,
+      apiVersionMinor: 0,
+      merchantInfo: {
+        merchantName: 'Example Merchant'
+      },
+      allowedPaymentMethods: [{
+        type: 'CARD',
+        parameters: {
+          allowedAuthMethods: allowedCardAuthMethods,
+          allowedCardNetworks: allowedCardNetworks
+        },
+        tokenizationSpecification: {
+          type: 'PAYMENT_GATEWAY',
+          parameters: {
+            gateway: 'example',
+            gatewayMerchantId: 'exampleGatewayMerchantId'
+          }
+        }
+      }]
+    };
+  }
+
+  function createPaymentRequest() {
+    const supportedInstruments = [{
+      supportedMethods: ['https://tez.google.com/pay'],
+      data: {
+        pa: 'ceoapkakart@oksbi',
+        pn: 'Erecto',
+        tr: '1234ABCD',
+        url: 'https://www.erecto.in',
+        mc: '1234',
+        tn: 'Purchase in Merchant',
+        invoiceNo: 'BillRef123',
+        invoiceDate: '2019-06-11T13:21:50+05:30',
+      },
+    }];
+
+    const details = { total: { label: 'Appointment fee', amount: { currency: 'INR', value: '1.00' } } };
+    const options = { requestPayerEmail: true, requestPayerName: true };
+
+    return new PaymentRequest(supportedInstruments, details, options);
+  }
+
+  function handlePaymentResponse(response) {
+    const formattedResponse = document.createElement('pre');
+    formattedResponse.textContent = JSON.stringify(response.toJSON(), null, 2);
+    document.getElementById('checkout').insertAdjacentElement('afterend', formattedResponse);
+  }
+
+  function showError(message) {
+    const errorDisplay = document.createElement('code');
+    errorDisplay.style.color = 'red';
+    errorDisplay.textContent = message;
+    document.getElementById('checkout').insertAdjacentElement('afterend', errorDisplay);
+  }
+</script>
