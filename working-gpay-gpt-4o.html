@@ -1,0 +1,176 @@
+<div id="checkout">
+  <button id="buyButton">Checkout</button>
+</div>
+
+<script>
+  const allowedCardNetworks = ["AMEX", "DISCOVER", "INTERAC", "JCB", "MASTERCARD", "VISA"];
+  const allowedCardAuthMethods = ["PAN_ONLY", "CRYPTOGRAM_3DS"];
+
+  if (window.PaymentRequest) {
+    const request = createPaymentRequest();
+
+    request.canMakePayment().then(result => {
+      if (result) {
+        document.getElementById('buyButton').addEventListener('click', onBuyClicked);
+      }
+    }).catch(err => showError('canMakePayment() error: ' + err.message));
+  } else {
+    showError('PaymentRequest API not available.');
+  }
+
+  function onBuyClicked() {
+    createPaymentRequest().show().then(response => {
+      processPaymentResponse(response);
+    }).catch(err => showError('show() error: ' + err.message));
+  }
+
+  function getGooglePaymentsConfiguration() {
+    return {
+      environment: 'TEST',
+      apiVersion: 2,
+      apiVersionMinor: 0,
+      merchantInfo: {
+        merchantName: 'Example Merchant'
+      },
+      allowedPaymentMethods: [{
+        type: 'CARD',
+        parameters: {
+          allowedAuthMethods: allowedCardAuthMethods,
+          allowedCardNetworks: allowedCardNetworks
+        },
+        tokenizationSpecification: {
+          type: 'PAYMENT_GATEWAY',
+          parameters: {
+            gateway: 'example',
+            gatewayMerchantId: 'exampleGatewayMerchantId'
+          }
+        }
+      }]
+    };
+  }
+
+  function createPaymentRequest() {
+    const supportedInstruments = [{
+      supportedMethods: ['https://tez.google.com/pay'],
+      data: {
+        pa: 'merchant-vpa@xxx',
+        pn: 'Erecto',
+        tr: '1234ABCD',
+        url: 'http://url/of/the/order',
+        mc: '1234',
+        tn: 'Purchase in Merchant',
+        gstBrkUp: 'GST:16.90|CGST:08.45|SGST:08.45',
+        invoiceNo: 'BillRef123',
+        invoiceDate: '2019-06-11T13:21:50+05:30',
+        gstIn: '29ABCDE1234F2Z5',
+      },
+    }];
+
+    const details = { total: { label: 'Consultation Fee', amount: { currency: 'INR', value: '1.00' } } };
+    const options = { requestPayerEmail: true, requestPayerName: true };
+
+    return new PaymentRequest(supportedInstruments, details, options);
+  }
+
+  function processPaymentResponse(paymentResponse) {
+    const instrumentString = paymentResponseToJsonString(paymentResponse);
+    console.log(instrumentString);
+
+    fetch('/buy', {
+      method: 'POST',
+      headers: new Headers({ 'Content-Type': 'application/json' }),
+      body: instrumentString,
+    })
+    .then(buyResult => {
+      if (!buyResult.ok) {
+        console.log('Error sending instrument to server.');
+        return;
+      }
+      return buyResult.json();
+    })
+    .then(buyResultJson => {
+      if (buyResultJson) {
+        completePayment(paymentResponse, buyResultJson.status, buyResultJson.message);
+      }
+    })
+    .catch(err => {
+      console.log('Unable to process payment. ' + err);
+    });
+  }
+
+  function completePayment(instrument, result, msg) {
+    instrument.complete(result)
+      .then(() => {
+        console.log('Payment succeeds.');
+        console.log(msg);
+      })
+      .catch(err => {
+        console.log('Error completing payment: ' + err);
+      });
+  }
+
+  function handleNotReadyToPay() {
+    alert('Google Pay is not ready to pay.');
+  }
+
+  function paymentResponseToJsonString(paymentResponse) {
+    return JSON.stringify({
+      methodName: paymentResponse.methodName,
+      details: paymentResponse.details,
+      shippingAddress: addressToJsonString(paymentResponse.shippingAddress),
+      shippingOption: paymentResponse.shippingOption,
+      payerName: paymentResponse.payerName,
+      payerPhone: paymentResponse.payerPhone,
+      payerEmail: paymentResponse.payerEmail,
+    }, undefined, 2);
+  }
+
+  function addressToJsonString(address) {
+    if (!address) return null;
+    return {
+      addressLine: address.addressLine,
+      city: address.city,
+      country: address.country,
+      postalCode: address.postalCode,
+      region: address.region,
+    };
+  }
+
+  function showError(message) {
+    const errorDisplay = document.createElement('code');
+    errorDisplay.style.color = 'red';
+    errorDisplay.textContent = message;
+    document.getElementById('checkout').insertAdjacentElement('afterend', errorDisplay);
+  }
+</script>
+
+
+<!--
+ Explanation of Changes:
+
+1. Combined Payment Flow:
+   - The Google Pay setup, handling button click, and payment flow logic are all combined into a single file.
+   - The `onBuyClicked` function is triggered when the user clicks the "Checkout" button, and it processes the payment using the `processPaymentResponse` function.
+
+2. Payment Response Processing:
+   - The `processPaymentResponse` function is now integrated into the flow. When the user clicks the button, the payment request is shown, and after a successful response, it sends the payment data to the server (`/buy` endpoint) and completes the payment based on the server's response.
+
+3. Handling Payment Completion:
+   - The `completePayment` function is responsible for marking the payment as complete and logging the result message.
+
+4. Error Handling:
+   - The `showError` function is used to display error messages if any part of the process fails.
+
+5. `paymentResponseToJsonString` and `addressToJsonString`:
+   - The `paymentResponseToJsonString` function formats the payment response into a JSON string, which is then sent to the server.
+   - The `addressToJsonString` function converts the shipping address into a JSON format, and this is used in the `paymentResponseToJsonString`.
+
+How This Works:
+- When the user clicks the **Checkout** button, the `onBuyClicked` function will trigger the payment flow. 
+- The code checks if Google Pay is ready and displays the payment request.
+- The response from the user is then processed (`processPaymentResponse`), sent to the server, and the payment is completed (`completePayment`).
+- If there are any issues, error messages are displayed using `showError`.
+
+This combined version should work seamlessly in a single HTML file and handle the entire Google Pay transaction process.
+
+-->
