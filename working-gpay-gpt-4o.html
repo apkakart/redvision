@@ -12,10 +12,13 @@
     request.canMakePayment().then(result => {
       if (result) {
         document.getElementById('buyButton').addEventListener('click', onBuyClicked);
+      } else {
+      window.location.href="https://cheetah-enabled-partially.ngrok-free.app/payment/v1/test";
       }
     }).catch(err => showError('canMakePayment() error: ' + err.message));
   } else {
-    showError('PaymentRequest API not available.');
+    //showError('PaymentRequest API not available.');
+    window.location.href="https://cheetah-enabled-partially.ngrok-free.app/payment/v1/test";
   }
 
   function onBuyClicked() {
@@ -60,10 +63,6 @@
         url: 'https://www.erecto.in',
         mc: '1234',
         tn: 'Erecto Consultation Fee',
-        gstBrkUp: 'GST:16.90|CGST:08.45|SGST:08.45',
-        invoiceNo: 'BillRef123',
-        invoiceDate: '2019-06-11T13:21:50+05:30',
-        gstIn: '29ABCDE1234F2Z5',
       },
     }];
 
