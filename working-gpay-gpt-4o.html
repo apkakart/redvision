@@ -13,12 +13,19 @@
       if (result) {
         document.getElementById('buyButton').addEventListener('click', onBuyClicked);
       } else {
-      window.location.href="https://cheetah-enabled-partially.ngrok-free.app/payment/v1/test";
-      }
+      showError('Gpay not available on this device. Please install it.');
+    document.getElementById('buyButton').addEventListener('click', goToStandard);
+  }
     }).catch(err => showError('canMakePayment() error: ' + err.message));
   } else {
-    //showError('PaymentRequest API not available.');
-    window.location.href="https://cheetah-enabled-partially.ngrok-free.app/payment/v1/test";
+    showError('PaymentRequest API not available.');
+    document.getElementById('buyButton').addEventListener('click', goToStandard);
+  }
+  
+  function goToStandard(){
+   window.location.href="https://www.erecto.in";
+   //window.location.href="https://cheetah-enabled-partially.ngrok-free.app/payment/v1/test";
+   
   }
 
   function onBuyClicked() {
